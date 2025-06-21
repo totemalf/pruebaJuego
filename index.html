@@ -1,122 +1,299 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | ProyectoGml</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mundo Drasgui</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+
+    .main-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    header {
+      background-color: #ffcc00;
+      padding: 5px 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+      margin-top: 20px;
+      border-radius: 15px;
+      margin-left: 20px;
+      margin-right: 20px;
+      min-height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    header img {
+      width: 400px;
+      height: 120px;
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .ad-square {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+      width: 90px;
+      height: 90px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    nav {
+      background-color: #ffeb99;
+      display: flex;
+      justify-content: center;
+      padding: 8px 0;
+      gap: 40px;
+      margin-left: 20px;
+      margin-right: 20px;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    nav span {
+      font-family: 'Luckiest Guy', cursive;
+      color: #ffffff;
+      text-shadow: 2px 2px 0 #444;
+      font-size: 1.5em;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+    nav span:hover {
+      transform: scale(1.2);
+    }
+    nav span:active {
+      color: #ffcc00;
+    }
+    .main-content {
+      display: grid;
+      grid-template-columns: 160px 1fr 160px;
+      gap: 20px;
+      padding: 20px;
+    }
+    .ads-side {
+      background-color: #eee;
+      text-align: center;
+      padding: 10px;
+      min-height: 100%;
+      font-size: 0.9em;
+      border: 1px dashed #bbb;
+      border-radius: 8px;
+    }
+    .games-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      /* --- CAMBIO AQUÍ: Añadimos padding a la sección de juegos para evitar recortes --- */
+      padding: 10px; /* Suficiente espacio para que las tarjetas se agranden */
+    }
+    .game-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 10px;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 100%;
+      transition: all 0.3s ease-out;
+      /* --- CAMBIO AQUÍ: Propiedades para evitar recorte y hacer que "flote" --- */
+      position: relative; /* Necesario para que z-index funcione */
+      z-index: 1; /* Asegura que la tarjeta animada esté por encima de las demás */
+    }
+
+    /* --- CAMBIO CLAVE AQUÍ: Animación del primer juego aplicada a todas las tarjetas --- */
+    .game-card:hover {
+      transform: scale(1.08); /* Aumentado ligeramente a 1.08 para más impacto */
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 2; /* Mayor z-index al hacer hover para asegurar que esté en la parte superior */
+    }
+
+    /* --- ELIMINADAS LAS ANIMACIONES INDIVIDUALES PARA CADA CHILD --- */
+
+
+    .game-card img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      display: block;
+    }
+    .game-card h3 {
+      margin: 10px 0 0 0;
+      font-size: 1em;
+    }
+    footer {
+      text-align: center;
+      padding: 8px 20px;
+      background-color: #ffcc00;
+      position: relative;
+      margin-top: 20px;
+      border-radius: 15px;
+      margin-left: 20px;
+      margin-right: 20px;
+      box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ad-bottom {
+      background-color: #ddd;
+      height: 90px;
+      max-width: 728px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      line-height: 90px;
+      border: 1px dashed #999;
+      border-radius: 8px;
+    }
+    footer p {
+        margin: 0;
+        font-size: 0.9em;
+        color: #555;
+    }
+    @media screen and (max-width: 1000px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      .ads-side {
+        display: none;
+      }
+      .games-section {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        padding: 5px; /* Ajuste del padding para móviles también */
+      }
+      header, nav, footer {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      .ad-bottom {
+        max-width: 100%;
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <header>
+      <img src="imagenes/Mundodrasguititulo.png"
+           srcset="imagenes/Mundodrasguititulo.png 1x, imagenes/mundodrasguititulox2.png 2x"
+           alt="Mundo Drasgui - Título">
+      <div class="ad-square">Publicidad</div>
+    </header>
+    <nav>
+      <span>Inicio</span>
+      <span>Juegos</span>
+      <span>Videos</span>
+      <span>Contacto</span>
+    </nav>
+
+    <div class="main-content">
+      <div class="ads-side">Publicidad vertical</div>
+      <section class="games-section" id="juegos">
+        <div class="game-card">
+          <img src="imagenes/1JuegodescubreMinix1.jpg"
+               srcset="imagenes/1JuegodescubreMinix1.jpg 1x, imagenes/1JuegodescubreMinix2.jpg 2x"
+               alt="Quién hay dentro">
+          <h3>Quién hay dentro</h3>
         </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">ProyectoGml</div>
-      </div>
+        <div class="game-card">
+          <img src="imagenes/2JuegoSonidosMinix1.jpg"
+               srcset="imagenes/2JuegoSonidosMinix1.jpg 1x, imagenes/2JuegoSonidosMinix2.jpg 2x"
+               alt="Sonidos de animales">
+          <h3>Sonidos de animales</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/3JuegoColoreaMinix1.jpg"
+               srcset="imagenes/3JuegoColoreaMinix1.jpg 1x, imagenes/3JuegoColoreaMinix2.jpg 2x"
+               alt="Aprende a colorear">
+          <h3>Aprende a colorear</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/4JuegoCazarMinix1.jpg"
+               srcset="imagenes/4JuegoCazarMinix1.jpg 1x, imagenes/4JuegoCazarMinix2.jpg 2x"
+               alt="Atrapa con tu mazo">
+          <h3>Atrapa con tu mazo</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/5JuegoExplotaMinix1.jpg"
+               srcset="imagenes/5JuegoExplotaMinix1.jpg 1x, imagenes/5JuegoExplotaMinix2.jpg 2x"
+               alt="Pulsa y explota">
+          <h3>Pulsa y explota</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/6JuegoFormasMinix1.jpg"
+               srcset="imagenes/6JuegoFormasMinix1.jpg 1x, imagenes/6JuegoFormasMinix2.jpg 2x"
+               alt="Descubre las formas">
+          <h3>Descubre las formas</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/7JuegoParejasMinix1.jpg"
+               srcset="imagenes/7JuegoParejasMinix1.jpg 1x, imagenes/7JuegoParejasMinix2.jpg 2x"
+               alt="Encuentra la parejas">
+          <h3>Encuentra su pareja</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/8JuegoRecogeMinix1.jpg"
+               srcset="imagenes/8JuegoRecogeMinix1.jpg 1x, imagenes/8JuegoRecogeMinix2.jpg 2x"
+               alt="Recoge con tu cesta">
+          <h3>Recoge con tu cesta</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/9JuegoReciclaMinix1.jpg"
+               srcset="imagenes/9JuegoReciclaMinix1.jpg 1x, imagenes/9JuegoReciclaMinix2.jpg 2x"
+               alt="Cuida del planeta">
+          <h3>Cuida el planeta</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/10JuegoDiferenciasMinix1.jpg"
+               srcset="imagenes/10JuegoDiferenciasMinix1.jpg 1x, imagenes/10JuegoDiferenciasMinix2.jpg 2x"
+               alt="Cuál es distinto">
+          <h3>Cuál es distinto</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/11JuegoSiluetasMinix1.jpg"
+               srcset="imagenes/11JuegoSiluetasMinix1.jpg 1x, imagenes/11JuegoSiluetasMinix2.jpg 2x"
+               alt="De quién es la sombra">
+          <h3>De quién es la sombra</h3>
+        </div>
+        <div class="game-card">
+          <img src="imagenes/12JuegoPuzzlesMinix1.jpg"
+               srcset="imagenes/12JuegoPuzzlesMinix1.jpg 1x, imagenes/12JuegoPuzzlesMinix2.jpg 2x"
+               alt="Junta las piezas">
+          <h3>Junta las piezas</h3>
+        </div>
+      </section>
+      <div class="ads-side">Publicidad vertical</div>
     </div>
-    <script>
-
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
-
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/ExportaJuego.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/ExportaJuego.data",
-        frameworkUrl: buildUrl + "/ExportaJuego.framework.js",
-        codeUrl: buildUrl + "/ExportaJuego.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "ProyectoGml",
-        productVersion: "1.0",
-        showBanner: unityShowBanner,
-      };
-
-      // By default Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
-      }
-
-      loadingBar.style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
-    </script>
-  </body>
+    <footer>
+      <div class="ad-bottom">Publicidad horizontal</div>
+      <p>&copy; 2025 MundoDrasgui by AsensioSoft. Todos los derechos reservados.</p>
+    </footer>
+  </div>
+</body>
 </html>
